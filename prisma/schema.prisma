@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  email      String       @unique
+  password   String
+  session    Session[]
+  credential Credential[]
+  SafeNote   SafeNote[]
+  Card       Card[]
+  Wifi       Wifi[]
+
+  @@map("users")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model Credential {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  url       String
+  userName  String
+  password  String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
+  @@map("credentials")
+}
+
+model SafeNote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  note      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
+  @@map("safeNotes")
+}
+
+model Card {
+  id             Int      @id @default(autoincrement())
+  title          String
+  createdAt      DateTime @default(now())
+  cardNumber     String
+  cardholderName String
+  securityCode   String
+  expirationDate String
+  password       String
+  virtual        Boolean
+  type           CardType
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, title])
+  @@map("cards")
+}
+
+enum CardType {
+  credit
+  debit
+  both
+
+  @@map("cardTypes")
+}
+
+model Wifi {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  networkName  String
+  password     String
+  networkTitle String
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@map("wifi")
+}
