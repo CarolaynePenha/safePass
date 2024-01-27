@@ -1,5 +1,5 @@
 import joi from "joi";
-import { RequestSafeNote } from "../controllers/safeNoteCrontroller";
+import { RequestSafeNote } from "../controllers/safeNoteCrontroller.js";
 
 const safeNoteSchema = joi.object<RequestSafeNote>({
   title: joi.string().max(50).required(),
