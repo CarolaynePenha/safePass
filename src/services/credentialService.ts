@@ -1,11 +1,11 @@
 import Cryptr from "cryptr";
 import { CreateCredential } from "../controllers/credentialsController.js";
+import { Credential } from "@prisma/client";
 import {
   conflictError,
   notFoundError,
 } from "../middlewares/handleErrorsMiddleware.js";
 import credentialsRepository from "../repositories/credentialReporitory.js";
-import { number } from "joi";
 
 async function saveCredential(credentialInfos: CreateCredential) {
   await checkTitleIsUnique(credentialInfos.title, credentialInfos.userId);
@@ -31,20 +31,45 @@ export interface CredentialIds {
   id: number;
 }
 async function selectCredentials(userId: number) {
-  return await credentialsRepository.findCredentials(userId);
+  const userCredentials = await credentialsRepository.findCredentials(userId);
+  return decrypt(userCredentials);
 }
 async function selectCredential(ids: CredentialIds) {
+  const credential = await findUserCredential(ids);
+  const userCredential = decrypt(credential);
+  return userCredential;
+}
+async function findUserCredential(ids: CredentialIds) {
   const credential = await credentialsRepository.findCredential(ids);
-  if (!credential.length) {
+  if (!credential[0]) {
     const message = "Invalid credential id";
     throw notFoundError(message);
   }
   return credential;
 }
+
+function decrypt(userCredentials: Credential[]) {
+  const cryptr = new Cryptr(process.env.CRYPTR_SECRET_KEY);
+  const CredentialsDecrypt = userCredentials.map(
+    (userCredential: Credential) => {
+      const password = cryptr.decrypt(userCredential.password);
+      const data = { ...userCredential, password };
+      return data;
+    }
+  );
+  return CredentialsDecrypt;
+}
+
+async function deleteUserCredential(ids: CredentialIds) {
+  await findUserCredential(ids);
+  credentialsRepository.deleteCredential(ids);
+}
+
 const credentialService = {
   saveCredential,
   selectCredentials,
   selectCredential,
+  deleteUserCredential,
 };
 
 export default credentialService;

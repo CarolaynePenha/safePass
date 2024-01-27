@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Credential } from "@prisma/client";
 import credentialService from "../services/credentialService.js";
-import credentialsRepository from "../repositories/credentialReporitory.js";
 
 export type RequestCredential = Omit<Credential, "id" | "createdAt" | "userId">;
 export type CreateCredential = Omit<Credential, "id" | "createdAt">;
@@ -26,4 +25,13 @@ export async function getCredential(req: Request, res: Response) {
     id: Number(id),
   });
   res.status(200).send(userCredential);
+}
+export async function deleteCredential(req: Request, res: Response) {
+  const { id } = req.params;
+  const { userId } = res.locals;
+  await credentialService.deleteUserCredential({
+    userId,
+    id: Number(id),
+  });
+  res.sendStatus(200);
 }
