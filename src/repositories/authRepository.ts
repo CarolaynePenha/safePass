@@ -9,7 +9,8 @@ async function postUserInfos(signUpInfos: CreateUser) {
   await prisma.user.create({ data: signUpInfos });
 }
 async function postSessionInfos(sessionInfos: CreateSession) {
-  await prisma.session.create({ data: sessionInfos });
+  const { token } = await prisma.session.create({ data: sessionInfos });
+  return token;
 }
 async function getSession(token: string) {
   return await prisma.session.findUnique({ where: { token } });
