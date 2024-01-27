@@ -14,7 +14,6 @@ export default async function tokenValidation(
     throw unauthorizedError(message);
   }
   const decodedToken = jwt.verify(token, process.env.KEY);
-  console.log("decodedToken: ", decodedToken);
   if (!decodedToken) {
     const message = "Invalid token ";
     throw unauthorizedError(message);

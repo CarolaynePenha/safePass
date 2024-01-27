@@ -13,7 +13,6 @@ async function findByTitleAndUserId(title: string, userId: number) {
   });
 }
 async function postCredential(credentialInfos: CreateCredential) {
-  console.log("credentialInfos: ", credentialInfos);
   await prisma.credential.create({ data: credentialInfos });
 }
 
