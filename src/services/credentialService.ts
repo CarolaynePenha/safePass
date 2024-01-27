@@ -1,10 +1,10 @@
 import Cryptr from "cryptr";
-import { CreateCredential } from "../controllers/credentialsController.js";
 import { Credential } from "@prisma/client";
 import {
   conflictError,
   notFoundError,
 } from "../middlewares/handleErrorsMiddleware.js";
+import { CreateCredential } from "../controllers/credentialsController.js";
 import credentialsRepository from "../repositories/credentialReporitory.js";
 
 async function saveCredential(credentialInfos: CreateCredential) {

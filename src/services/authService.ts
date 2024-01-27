@@ -1,12 +1,12 @@
-import { CreateUser } from "../controllers/authController";
+import { Session } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authRepository from "../repositories/authRepository.js";
+import { CreateUser } from "../controllers/authController.js";
 import {
   conflictError,
   unauthorizedError,
 } from "../middlewares/handleErrorsMiddleware.js";
-import { Session } from "@prisma/client";
 
 async function saveUser(signUpInfos: CreateUser) {
   const salt = 10;
