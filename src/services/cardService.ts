@@ -57,7 +57,7 @@ function decrypt(userCards: Card[]) {
 
 async function deleteUserCard(ids: CredentialIds) {
   await findUserCard(ids);
-  cardRepository.deleteCard(ids);
+  await cardRepository.deleteCard(ids);
 }
 
 const cardService = {

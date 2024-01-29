@@ -43,7 +43,7 @@ function decrypt(userWifi: Wifi[]) {
 
 async function deleteUserWifi(ids: CredentialIds) {
   await findUserWifi(ids);
-  wifiRepositorie.deleteWifi(ids);
+  await wifiRepositorie.deleteWifi(ids);
 }
 
 const wifiService = {

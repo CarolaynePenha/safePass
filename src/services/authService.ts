@@ -24,8 +24,8 @@ async function userExists(email: string, type: string) {
     throw conflictError(message);
   }
   if (type === "others" && !user) {
-    const message = "email already exists";
-    throw conflictError(message);
+    const message = "Invalid email or password";
+    throw unauthorizedError(message);
   }
   return user;
 }

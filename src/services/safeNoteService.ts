@@ -32,7 +32,7 @@ async function selectNote(ids: CredentialIds) {
 
 async function deleteUserNote(ids: CredentialIds) {
   await selectNote(ids);
-  safeNoteRepository.deleteNote(ids);
+  await safeNoteRepository.deleteNote(ids);
 }
 const safeNoteService = {
   saveNote,

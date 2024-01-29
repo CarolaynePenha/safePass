@@ -62,7 +62,7 @@ function decrypt(userCredentials: Credential[]) {
 
 async function deleteUserCredential(ids: CredentialIds) {
   await findUserCredential(ids);
-  credentialsRepository.deleteCredential(ids);
+  await credentialsRepository.deleteCredential(ids);
 }
 
 const credentialService = {
